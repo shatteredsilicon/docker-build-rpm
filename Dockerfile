@@ -1,7 +1,8 @@
 FROM rockylinux:9.3-minimal
 
-RUN microdnf -y update && \
-    microdnf -y install yum
+# Ignore return value of microdnf as it seems to succeed but return a failure code on some hosts
+RUN microdnf -y update || /bin/true
+RUN microdnf -y install yum
 RUN yum -y install epel-release
 RUN dnf module enable -y nodejs:18
 RUN yum -y --allowerasing install nodejs yum-utils rpmdevtools createrepo_c mock git golang \
