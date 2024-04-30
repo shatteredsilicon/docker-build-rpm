@@ -24,7 +24,9 @@ COPY ssm-9.cfg /etc/mock/ssm-9-.cfg
 RUN \
 	ARCH="$(rpm --eval "%{_arch}")" &&\
 	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-9-.cfg > "/etc/mock/ssm-9-${ARCH}.cfg" &&\
-	rm /etc/mock/ssm-9-.cfg
+	rm /etc/mock/ssm-9-.cfg &&\
+	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/mock/templates/rocky-9.tpl &&\
+	sed -i 's/^#baseurl=/baseurl=/g' /etc/mock/templates/rocky-9.tpl
 
 ENV GOPATH=/home/builder/go
 RUN chown -R builder:builder /home/builder
