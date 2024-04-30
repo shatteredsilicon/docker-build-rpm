@@ -11,7 +11,6 @@ RUN npm uninstall -g yarn pnpm && npm install -g corepack
 
 RUN useradd builder -u 1000 -m -G users,wheel,mock && \
     chmod 755 /home/builder
-RUN (rkhunter --update || true) && rkhunter --propupd
 
 RUN \
 	corepack enable &&\
@@ -30,8 +29,6 @@ RUN \
 
 ENV GOPATH=/home/builder/go
 RUN chown -R builder:builder /home/builder
-
-RUN rkhunter --propupd uname && rkhunter --check --disable system_configs_syslog --disable avail_modules --disable passwd_changes --disable group_changes
 
 #Configure build time caches
 ENV npm_config_cache=/mnt/cache/npm
