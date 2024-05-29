@@ -1,4 +1,4 @@
-FROM rockylinux:9.3-minimal
+FROM rockylinux/rockylinux:9.4-minimal
 
 # Ignore return value of microdnf as it seems to succeed but return a failure code on some hosts
 RUN microdnf -y update || /bin/true
