@@ -21,6 +21,10 @@ COPY ssm-9.tpl /etc/mock/templates/ssm-9.tpl
 
 COPY ssm-9.cfg /etc/mock/ssm-9-.cfg
 
+COPY centos-7.tpl /etc/mock/templates/centos-7.tpl
+
+COPY centos-7-x86_64.cfg /etc/mock/centos-7-x86_64.cfg
+
 RUN \
 	ARCH="$(rpm --eval "%{_arch}")" &&\
 	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-9-.cfg > "/etc/mock/ssm-9-${ARCH}.cfg" &&\
