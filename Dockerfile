@@ -5,8 +5,11 @@ RUN microdnf -y update || /bin/true
 RUN microdnf -y install yum
 RUN yum -y install epel-release
 RUN dnf module enable -y nodejs:18
-RUN yum -y --allowerasing install nodejs yum-utils rpmdevtools createrepo_c mock git golang \
+RUN yum -y --allowerasing install nodejs yum-utils rpmdevtools createrepo_c mock git \
         jq make gcc-c++ rsync rkhunter coreutils file
+
+COPY go.repo /etc/yum.repos.d/go.repo
+RUN yum install -y golang
 
 RUN npm uninstall -g yarn pnpm && npm install -g corepack
 
@@ -17,23 +20,19 @@ RUN \
 	corepack enable &&\
 	corepack prepare yarn@stable --activate
 
-COPY ssm-8.cfg /etc/mock/ssm-8-.cfg
+COPY ssm-7.tpl /etc/mock/templates/ssm-7.tpl
+COPY ssm-7.cfg /etc/mock/ssm-7-.cfg
 
 COPY ssm-9.tpl /etc/mock/templates/ssm-9.tpl
-
 COPY ssm-9.cfg /etc/mock/ssm-9-.cfg
-
-COPY centos-7.tpl /etc/mock/templates/centos-7.tpl
-
-COPY centos-7-x86_64.cfg /etc/mock/centos-7-x86_64.cfg
 
 RUN \
 	ARCH="$(rpm --eval "%{_arch}")" &&\
-	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-8-.cfg > "/etc/mock/ssm-8-${ARCH}.cfg" &&\
+	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-7-.cfg > "/etc/mock/ssm-7-${ARCH}.cfg" &&\
 	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-9-.cfg > "/etc/mock/ssm-9-${ARCH}.cfg" &&\
-	rm /etc/mock/ssm-8-.cfg /etc/mock/ssm-9-.cfg &&\
-	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/mock/templates/rocky-8.tpl /etc/mock/templates/rocky-9.tpl &&\
-	sed -i 's/^#baseurl=/baseurl=/g' /etc/mock/templates/rocky-8.tpl /etc/mock/templates/rocky-9.tpl
+	rm /etc/mock/ssm-7-.cfg /etc/mock/ssm-9-.cfg &&\
+	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/mock/templates/rocky-9.tpl &&\
+	sed -i 's/^#baseurl=/baseurl=/g' /etc/mock/templates/rocky-9.tpl
 
 ENV GOPATH=/home/builder/go
 RUN chown -R builder:builder /home/builder

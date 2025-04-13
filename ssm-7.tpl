@@ -1,4 +1,4 @@
-config_opts['dnf.conf'] += """
+config_opts['yum.conf'] += """
 
 [go-el$releasever-$basearch]
 name=go-el$releasever-$basearch
