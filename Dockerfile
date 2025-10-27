@@ -4,8 +4,8 @@ FROM rockylinux/rockylinux:9.6-minimal
 RUN microdnf -y update || /bin/true
 RUN microdnf -y install yum
 RUN yum -y install epel-release
-RUN dnf module enable -y nodejs:18
-RUN yum -y --allowerasing install nodejs yum-utils rpmdevtools createrepo_c mock git \
+RUN dnf module enable -y nodejs:22
+RUN yum -y --allowerasing install nodejs npm yum-utils rpmdevtools createrepo_c mock git \
         jq make gcc-c++ rsync rkhunter coreutils file
 
 COPY go.repo /etc/yum.repos.d/go.repo
