@@ -23,14 +23,19 @@ RUN \
 COPY ssm-7.tpl /etc/mock/templates/ssm-7.tpl
 COPY ssm-7.cfg /etc/mock/ssm-7-.cfg
 
+COPY ssm-8.cfg /etc/mock/ssm-8-.cfg
+
 COPY ssm-9.tpl /etc/mock/templates/ssm-9.tpl
 COPY ssm-9.cfg /etc/mock/ssm-9-.cfg
 
 RUN \
 	ARCH="$(rpm --eval "%{_arch}")" &&\
 	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-7-.cfg > "/etc/mock/ssm-7-${ARCH}.cfg" &&\
+	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-8-.cfg > "/etc/mock/ssm-8-${ARCH}.cfg" &&\
 	sed "s/_ARCH_/${ARCH}/g" /etc/mock/ssm-9-.cfg > "/etc/mock/ssm-9-${ARCH}.cfg" &&\
-	rm /etc/mock/ssm-7-.cfg /etc/mock/ssm-9-.cfg &&\
+	rm /etc/mock/ssm-7-.cfg /etc/mock/ssm-8-.cfg /etc/mock/ssm-9-.cfg &&\
+	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/mock/templates/rocky-8.tpl &&\
+	sed -i 's/^#baseurl=/baseurl=/g' /etc/mock/templates/rocky-8.tpl &&\
 	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/mock/templates/rocky-9.tpl &&\
 	sed -i 's/^#baseurl=/baseurl=/g' /etc/mock/templates/rocky-9.tpl
 
