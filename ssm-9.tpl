@@ -14,4 +14,5 @@ baseurl=https://dl.shatteredsilicon.net/misc/$releasever/RPMS/$basearch
 gpgkey=https://dl.shatteredsilicon.net/misc/RPM-GPG-KEY-SS-MISC
 gpgcheck=1
 enabled=1
+priority=999
 """
